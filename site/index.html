@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RevBox · Engine Sounds for Your Tesla</title>
+  <meta name="description" content="Engine sounds for your Tesla, driven by your real speed. Runs in the car's browser: no install, no account, no server.">
+  <meta name="theme-color" content="#0b0c0f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Fetch every module in parallel instead of discovering them one import at a time. -->
+  <link rel="modulepreload" href="js/app.js">
+  <link rel="modulepreload" href="js/cars.js">
+  <link rel="modulepreload" href="js/vehicle.js">
+  <link rel="modulepreload" href="js/gps.js">
+  <link rel="modulepreload" href="js/audio.js">
+  <link rel="modulepreload" href="js/car-art.js">
+  <link rel="modulepreload" href="js/photos.js">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 22a11 11 0 0 1 22 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 22l6-8" stroke="#ff6a1f" stroke-width="3" stroke-linecap="round"/></svg>
+      <span>RevBox</span>
+    </div>
+    <div class="pills">
+      <span id="gpsPill" class="pill"><i></i><b>GPS off</b></span>
+      <span id="enginePill" class="pill"><i></i><b>Engine off</b></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel gauge-panel" id="gaugePanel">
+      <button id="fsBtn" class="icon-btn" title="Full screen" aria-label="Full screen">
+        <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="gauge-wrap">
+        <svg id="gauge" viewBox="0 0 400 400" aria-hidden="true"></svg>
+        <div class="readout">
+          <div id="speed" class="speed">0</div>
+          <div id="unit" class="unit">km/h</div>
+          <div id="gear" class="gear">–</div>
+          <div id="rpmText" class="rpm">0 rpm</div>
+        </div>
+      </div>
+      <div class="throttle"><span>Throttle</span><div class="bar"><i id="thBar"></i></div></div>
+      <div class="pedals" id="pedals">
+        <button id="brakePedal" class="pedal brake" data-drive>BRAKE</button>
+        <button id="revPedal" class="pedal rev">REV</button>
+        <button id="gasPedal" class="pedal gas" data-drive>GAS<small>press higher = more</small></button>
+      </div>
+    </section>
+
+    <section class="panel side">
+      <div class="notice" id="gpsNotice">
+        <strong>Allow location access when asked.</strong>
+        The engine follows your real GPS speed, so without location there is nothing to rev.
+        <span class="muted">Parked? Hold <b>REV</b>, or switch to <b>Test drive</b>.</span>
+      </div>
+
+      <button id="startBtn" class="start"><span class="ring"></span><span id="startLabel">START ENGINE</span></button>
+
+      <div class="seg" role="tablist" aria-label="Speed source">
+        <button data-mode="gps" role="tab">GPS drive</button>
+        <button data-mode="drive" role="tab">Test drive</button>
+      </div>
+
+      <div class="hero">
+        <div id="carArt" class="car-art"></div>
+        <div id="photoCredit" class="photo-credit"></div>
+        <div class="car-info">
+          <h2 id="carName"></h2>
+          <p id="carTag"></p>
+          <div id="carSpecs" class="specs"></div>
+        </div>
+      </div>
+
+      <h3 class="section-title">Garage</h3>
+      <div id="carGrid" class="grid"></div>
+
+      <details class="settings" id="settings">
+        <summary>Settings</summary>
+        <label>Volume <input id="volume" type="range" min="0" max="1" step="0.01"></label>
+        <label>Crackle &amp; pops <input id="crackle" type="range" min="0" max="1.5" step="0.05"></label>
+        <label class="row">Units
+          <select id="units"><option value="kmh">km/h</option><option value="mph">mph</option></select>
+        </label>
+        <label class="row check"><input id="autostart" type="checkbox"> Start the engine with one tap after the page opens</label>
+      </details>
+    </section>
+  </main>
+
+  <section class="help" id="help">
+    <details>
+      <summary>How to use it in your Tesla</summary>
+      <ol>
+        <li>Open this page in the Tesla browser and add it to your favourites.</li>
+        <li>Pick a car, tap <b>START ENGINE</b> and allow location access.</li>
+        <li>Drive. The engine shifts through the gears with your real speed and acceleration.</li>
+        <li>Parked? Hold <b>REV</b> to rev it, or use <b>Test drive</b> with the on-screen pedals.</li>
+        <li>On a computer: <kbd>↑</kbd>/<kbd>W</kbd> gas, <kbd>↓</kbd>/<kbd>S</kbd> brake, <kbd>Space</kbd> rev.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Questions</summary>
+      <p><b>No sound?</b> Turn up the media volume in the car and check the volume slider in Settings. The browser only allows sound after you tap START ENGINE.</p>
+      <p><b>Engine stays at idle while driving?</b> Location access is off. Tap the padlock in the address bar and allow location, then reload.</p>
+      <p><b>Does it need internet?</b> Only for the first visit. After that it loads from the car's cache, even without signal.</p>
+      <p><b>Is it free?</b> Yes, every car. There are no accounts, no tracking and no server calls: everything runs in your browser.</p>
+    </details>
+    <details>
+      <summary>Photo credits</summary>
+      <p>Photos from Wikimedia Commons, used under their free licenses (resized).</p>
+      <ul id="credits"></ul>
+    </details>
+    <p class="footer">Sounds are synthesized live from each engine's firing order, crank layout and exhaust; no recordings are used. Car names are trademarks of their owners and are used only to describe the sound being imitated.</p>
+  </section>
+</body>
+</html>
